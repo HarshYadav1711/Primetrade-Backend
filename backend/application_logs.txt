@@ -2,3 +2,44 @@
 2026-02-04 20:09:36,241 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
 2026-02-04 20:09:36,259 [INFO] 🚀 Starting Crypto Trade Logger...
 2026-02-04 20:09:36,335 [INFO] ✅ Database tables created/verified
+2026-02-04 20:10:43,853 [INFO] 👋 Shutting down...
+2026-02-04 20:10:46,452 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 20:10:46,472 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 20:10:46,641 [INFO] ✅ Database tables created/verified
+2026-02-04 20:11:13,836 [WARNING] Login failed: user 'Norman22194' not found
+2026-02-04 20:11:13,838 [WARNING] Application error: INVALID_CREDENTIALS - Invalid username or password
+2026-02-04 20:56:18,998 [WARNING] Login failed: user 'Norman22194' not found
+2026-02-04 20:56:19,001 [WARNING] Application error: INVALID_CREDENTIALS - Invalid username or password
+2026-02-04 20:56:19,911 [WARNING] Login failed: user 'Norman22194' not found
+2026-02-04 20:56:19,913 [WARNING] Application error: INVALID_CREDENTIALS - Invalid username or password
+2026-02-04 20:56:28,403 [WARNING] Login failed: user 'Norman22194' not found
+2026-02-04 20:56:28,405 [WARNING] Application error: INVALID_CREDENTIALS - Invalid username or password
+2026-02-04 20:56:29,213 [WARNING] Login failed: user 'Norman22194' not found
+2026-02-04 20:56:29,214 [WARNING] Application error: INVALID_CREDENTIALS - Invalid username or password
+2026-02-04 20:56:58,656 [INFO] New user registered: 'norman22194' (ID: 1)
+2026-02-04 20:56:58,928 [INFO] User logged in: 'norman22194' (admin=False)
+2026-02-04 21:00:15,600 [INFO] 👋 Shutting down...
+2026-02-04 21:00:18,624 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 21:00:18,644 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 21:00:18,794 [INFO] ✅ Database tables created/verified
+2026-02-04 21:01:59,533 [INFO] 👋 Shutting down...
+2026-02-04 21:02:02,128 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 21:02:02,146 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 21:02:02,295 [INFO] ✅ Database tables created/verified
+2026-02-04 21:02:34,420 [INFO] 👋 Shutting down...
+2026-02-04 21:02:37,101 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 21:02:37,123 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 21:02:37,263 [INFO] ✅ Database tables created/verified
+2026-02-04 21:03:01,681 [INFO] Trades fetched: user='norman22194' count=1 filter=all
+2026-02-04 21:03:01,692 [INFO] Trades fetched: user='norman22194' count=1 filter=all
+2026-02-04 21:03:16,321 [INFO] 🟢 BUY TRADE OPENED: user='norman22194' symbol=BTC/USDT entry_price=5000.00000000 quantity=0.10000000 (ID: 2)
+2026-02-04 21:03:35,447 [INFO] Trade closed: user='norman22194' symbol=BTC/USDT entry=5000.00000000 exit=12000.00000000 pnl=700.00000000 (ID: 2)
+2026-02-04 21:04:15,866 [INFO] 👋 Shutting down...
+2026-02-04 21:04:18,564 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 21:04:18,585 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 21:04:18,637 [INFO] ✅ Database tables created/verified
+2026-02-04 21:04:32,524 [INFO] Trades fetched: user='norman22194' count=2 filter=all
+2026-02-04 21:04:32,535 [INFO] Trades fetched: user='norman22194' count=2 filter=all
+2026-02-04 21:04:48,987 [INFO] User logged in: 'norman22194' (admin=True)
+2026-02-04 21:04:49,039 [INFO] Trades fetched: user='norman22194' count=2 filter=all
+2026-02-04 21:04:49,060 [INFO] Trades fetched: user='norman22194' count=2 filter=all

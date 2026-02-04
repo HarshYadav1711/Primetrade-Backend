@@ -16,6 +16,7 @@ Business Logic:
 - Closing a trade calculates realized P&L
 """
 
+import logging
 from typing import List, Optional
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,6 +30,9 @@ from app.middleware.exception_handler import (
     TradeNotFoundError,
     TradeAlreadyClosedError
 )
+
+# Get logger instance
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/trades", tags=["Trades"])
 
@@ -71,6 +75,19 @@ async def create_trade(
         user_id=current_user.id,
         trade_data=trade_data
     )
+    
+    # Log trade creation with explicit BUY/SELL indicator
+    if trade.trade_type.value == "BUY":
+        logger.info(
+            f"🟢 BUY TRADE OPENED: user='{current_user.username}' symbol={trade.symbol} "
+            f"entry_price={trade.entry_price} quantity={trade.quantity} (ID: {trade.id})"
+        )
+    else:
+        logger.info(
+            f"🔴 SELL TRADE OPENED: user='{current_user.username}' symbol={trade.symbol} "
+            f"entry_price={trade.entry_price} quantity={trade.quantity} (ID: {trade.id})"
+        )
+    
     return trade
 
 
@@ -110,6 +127,12 @@ async def get_trades(
         user_id=current_user.id,
         status=status
     )
+    
+    logger.info(
+        f"Trades fetched: user='{current_user.username}' count={len(trades)} "
+        f"filter={status.value if status else 'all'}"
+    )
+    
     return trades
 
 
@@ -163,9 +186,11 @@ async def close_trade(
     )
     
     if not trade:
+        logger.warning(f"Trade not found: user='{current_user.username}' trade_id={trade_id}")
         raise TradeNotFoundError(trade_id)
     
     if trade.status == TradeStatus.CLOSED:
+        logger.warning(f"Trade already closed: user='{current_user.username}' trade_id={trade_id}")
         raise TradeAlreadyClosedError(trade_id)
     
     # Close the trade and calculate P&L
@@ -173,6 +198,12 @@ async def close_trade(
         db=db,
         trade=trade,
         exit_price=close_data.exit_price
+    )
+    
+    logger.info(
+        f"Trade closed: user='{current_user.username}' symbol={updated_trade.symbol} "
+        f"entry={updated_trade.entry_price} exit={updated_trade.exit_price} "
+        f"pnl={updated_trade.realized_pnl} (ID: {trade_id})"
     )
     
     return updated_trade

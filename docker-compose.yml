@@ -47,10 +47,9 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
-    # Development: Enable hot-reload by mounting source code
-    # Uncomment the following for development:
-    # volumes:
-    #   - ./backend:/app
+    # Mount log file to local filesystem for visibility
+    volumes:
+      - ./backend/application_logs.txt:/app/application_logs.txt
 
 volumes:
   postgres_data:

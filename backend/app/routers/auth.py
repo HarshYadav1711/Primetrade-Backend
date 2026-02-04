@@ -13,6 +13,7 @@ Security Notes:
 - Tokens expire after configured duration (default 30 minutes)
 """
 
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,6 +26,9 @@ from app.middleware.exception_handler import (
     InvalidCredentialsError,
     UsernameExistsError
 )
+
+# Get logger instance
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -64,6 +68,7 @@ async def register(
     existing_user = result.scalar_one_or_none()
     
     if existing_user:
+        logger.warning(f"Registration failed: username '{user_data.username}' already exists")
         raise UsernameExistsError(user_data.username)
     
     # Create new user with hashed password
@@ -77,6 +82,8 @@ async def register(
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
+    
+    logger.info(f"New user registered: '{new_user.username}' (ID: {new_user.id})")
     
     return new_user
 
@@ -117,15 +124,19 @@ async def login(
     user = result.scalar_one_or_none()
     
     # Verify user exists and password matches
-    if not user or not AuthService.verify_password(
-        form_data.password, 
-        user.hashed_password
-    ):
+    if not user:
+        logger.warning(f"Login failed: user '{form_data.username}' not found")
+        raise InvalidCredentialsError()
+    
+    if not AuthService.verify_password(form_data.password, user.hashed_password):
+        logger.warning(f"Login failed: invalid password for user '{form_data.username}'")
         raise InvalidCredentialsError()
     
     # Generate access token with admin status included
     access_token = AuthService.create_access_token(
         data={"sub": user.username, "is_admin": user.is_admin}
     )
+    
+    logger.info(f"User logged in: '{user.username}' (admin={user.is_admin})")
     
     return Token(access_token=access_token, token_type="bearer")

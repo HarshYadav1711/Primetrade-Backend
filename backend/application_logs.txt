@@ -1,1 +1,4 @@
 2026-02-05 01:21:09,937 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 20:09:36,241 [INFO] --- APPLICATION STARTUP: Crypto Trade Logger Initialized ---
+2026-02-04 20:09:36,259 [INFO] 🚀 Starting Crypto Trade Logger...
+2026-02-04 20:09:36,335 [INFO] ✅ Database tables created/verified

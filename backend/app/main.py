@@ -10,6 +10,7 @@ Application Features:
 - Global exception handling
 - CORS configuration for frontend
 - Automatic OpenAPI documentation
+- Structured logging (file + stdout)
 
 Startup:
     uvicorn app.main:app --reload
@@ -19,6 +20,8 @@ OpenAPI Docs:
     http://localhost:8000/redoc (ReDoc)
 """
 
+import logging
+import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,6 +37,25 @@ from app.middleware.exception_handler import (
     validation_exception_handler,
     generic_exception_handler
 )
+
+# =============================================================================
+# Structured Logging Configuration
+# =============================================================================
+# Dual handlers: write to file (for production/reliability) and stdout (for dev)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("application_logs.txt"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+# Create logger instance for use throughout the application
+logger = logging.getLogger(__name__)
+
+# Startup verification log
+logger.info("--- APPLICATION STARTUP: Crypto Trade Logger Initialized ---")
 
 settings = get_settings()
 
@@ -51,14 +73,14 @@ async def lifespan(app: FastAPI):
     - Any cleanup tasks would go here
     """
     # Startup: Create tables
-    print("🚀 Starting Crypto Trade Logger...")
+    logger.info("🚀 Starting Crypto Trade Logger...")
     await create_tables()
-    print("✅ Database tables created/verified")
+    logger.info("✅ Database tables created/verified")
     
     yield  # Application runs here
     
     # Shutdown: Cleanup
-    print("👋 Shutting down...")
+    logger.info("👋 Shutting down...")
 
 
 # Create FastAPI application

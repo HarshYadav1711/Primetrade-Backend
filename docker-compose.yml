@@ -1,0 +1,57 @@
+# Docker Compose Configuration
+# =============================
+# Orchestrates the backend API and PostgreSQL database.
+#
+# Usage:
+#   docker-compose up --build      # Start services
+#   docker-compose down            # Stop services
+#   docker-compose down -v         # Stop and remove volumes (clears DB)
+
+services:
+  # PostgreSQL Database
+  # Production-ready configuration with persistent storage
+  db:
+    image: postgres:15-alpine
+    container_name: primetrade_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: primetrade
+    volumes:
+      # Persist database data between restarts
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      # Expose for local DB tools (e.g., pgAdmin, DBeaver)
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: primetrade_api
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/primetrade
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-super-secret-key-change-in-production}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    # Development: Enable hot-reload by mounting source code
+    # Uncomment the following for development:
+    # volumes:
+    #   - ./backend:/app
+
+volumes:
+  postgres_data:
+    name: primetrade_postgres_data
